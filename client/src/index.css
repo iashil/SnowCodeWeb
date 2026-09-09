@@ -332,3 +332,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .remember-row input { accent-color: #1c2826; height: 15px; margin: 0; width: 15px; }
 .remember-row span { color: #7c8a81; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; }
 @media (max-width: 720px) { .team-social-nav { border-left: 0; margin: 8px 0 5px; padding-left: 0; } }
+
+.footer-emails { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 8px; }
+.footer-emails a { color: #85948a; font-family: "DM Mono", monospace; font-size: 9px; transition: color 180ms var(--ease-out); }
+.footer-emails a:hover { color: #334b3c; }
+@media (max-width: 560px) { .footer-emails { flex-direction: column; gap: 6px; } }
