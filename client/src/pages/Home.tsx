@@ -229,6 +229,7 @@ export default function Home() {
           <button onClick={() => scrollTo("work")}>Work</button>
           <button onClick={() => scrollTo("approach")}>Approach</button>
           <button onClick={() => scrollTo("contact")}>Contact</button>
+          <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>Admin</a>
           <button className="nav-availability" onClick={() => scrollTo("contact")}>
             <span className="status-dot" /> available for select projects
           </button>

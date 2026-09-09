@@ -19,7 +19,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { startLogin } from "@/const";
+import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -46,7 +46,9 @@ export default function DashboardLayout({
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
   });
-  const { loading, user } = useAuth();
+  const { loading, user, refresh } = useAuth();
+  const localLogin = trpc.auth.localLogin.useMutation({ onSuccess: () => refresh() });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
@@ -58,23 +60,19 @@ export default function DashboardLayout({
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
-            </h1>
-            <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
-            </p>
-          </div>
-          <Button
-            onClick={() => startLogin()}
-            size="lg"
-            className="w-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Sign in
-          </Button>
+      <div className="local-login-shell">
+        <div className="local-login-card">
+          <div className="local-login-brand"><span className="brand-icon"><span /></span><span className="brand-text"><strong>SNOW CODE</strong><em>TEAM</em></span></div>
+          <span className="mono-note">PRIVATE CONTENT DESK</span>
+          <h1>Welcome back.</h1>
+          <p>Sign in with the local admin account to manage projects and messages.</p>
+          <form onSubmit={async (event) => { event.preventDefault(); try { await localLogin.mutateAsync(loginForm); } catch { /* mutation error is rendered below */ } }} className="local-login-form">
+            <label><span>Email address</span><input type="email" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="admin@example.com" /></label>
+            <label><span>Password</span><input type="password" autoComplete="current-password" value={loginForm.password} onChange={(event) => setLoginForm({ ...loginForm, password: event.target.value })} placeholder="••••••••" /></label>
+            {localLogin.error && <div className="local-login-error">Invalid admin email or password.</div>}
+            <Button type="submit" size="lg" className="w-full shadow-lg hover:shadow-xl transition-all" disabled={localLogin.isPending}>{localLogin.isPending ? "Checking..." : "Enter content desk"}</Button>
+          </form>
+          <a className="back-to-site" href="/">← back to public site</a>
         </div>
       </div>
     );

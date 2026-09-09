@@ -1,10 +1,12 @@
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { createContact, createProject, deleteProject, listAllProjects, listContacts, listPublishedProjects, updateContactStatus, updateProject } from "./db";
 import { storagePut } from "./storage";
+import { authenticateLocalAdmin, createLocalAdminSession, LOCAL_ADMIN_COOKIE } from "./localAuth";
 import type { InsertProject } from "../drizzle/schema";
 
 const projectInput = z.object({
@@ -39,9 +41,16 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    localLogin: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1).max(200) })).mutation(({ input, ctx }) => {
+      const user = authenticateLocalAdmin(input.email, input.password);
+      if (!user) throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid admin email or password" });
+      ctx.res.cookie(LOCAL_ADMIN_COOKIE, createLocalAdminSession(), { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 24 * 7 });
+      return { success: true, user } as const;
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      ctx.res.clearCookie(LOCAL_ADMIN_COOKIE, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
   }),
