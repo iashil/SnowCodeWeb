@@ -63,7 +63,7 @@ export default function DashboardLayout({
     return (
       <div className="local-login-shell">
         <div className="local-login-card">
-          <div className="local-login-brand"><span className="brand-icon"><span /></span><span className="brand-text"><strong>SNOW CODE</strong><em>TEAM</em></span></div>
+          <div className="local-login-brand"><span className="brand-icon brand-image-wrap"><img className="brand-image" src="/manus-storage/snowcode-mark_2b5b9404.png" alt="SnowCode" /></span><span className="brand-text snowcode-wordmark"><strong>Snow<span>Code</span></strong><em>BUILD · CODE · GROW</em></span></div>
           <span className="mono-note">PRIVATE CONTENT DESK</span>
           <h1>Welcome back.</h1>
           <p>Sign in with the local admin account to manage projects and messages.</p>

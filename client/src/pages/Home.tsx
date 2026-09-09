@@ -91,6 +91,8 @@ const teamLinks = {
   emailTwo: "mailto:ferasmhyop2003@gmail.com",
 };
 
+const snowCodeMark = "/manus-storage/snowcode-mark_2b5b9404.png";
+
 const snowflakes = Array.from({ length: 34 }, (_, index) => ({
   left: `${(index * 29) % 100}%`,
   delay: `${(index % 9) * 0.7}s`,
@@ -260,8 +262,8 @@ export default function Home() {
 
       <header className="site-nav">
         <button className="brand-mark" onClick={() => scrollTo("top")} aria-label="Snow Code Team home">
-          <span className="brand-icon"><span /></span>
-          <span className="brand-text"><strong>SNOW CODE</strong><em>TEAM</em></span>
+          <span className="brand-icon brand-image-wrap"><img className="brand-image" src={snowCodeMark} alt="SnowCode" /></span>
+          <span className="brand-text snowcode-wordmark"><strong>Snow<span>Code</span></strong><em>BUILD · CODE · GROW</em></span>
         </button>
         <nav className={`nav-links ${menuOpen ? "nav-open" : ""}`}>
           <button onClick={() => scrollTo("work")}>Work</button>
@@ -361,7 +363,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon"><span /></span><span><strong>SNOW CODE</strong><em>TEAM</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={17} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp"><MessageCircle size={17} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={17} /></a><a href={teamLinks.emailOne} aria-label="Email asyl68372@gmail.com" title="asyl68372@gmail.com"><Mail size={17} /></a><a href={teamLinks.emailTwo} aria-label="Email ferasmhyop2003@gmail.com" title="ferasmhyop2003@gmail.com"><Mail size={17} /></a></div><div className="footer-emails"><a href={teamLinks.emailOne}>asyl68372@gmail.com</a><a href={teamLinks.emailTwo}>ferasmhyop2003@gmail.com</a></div><span className="footer-year">© 2024 — 2026</span><span className="dev-credit">Dev By: SnowCodeTeam</span></footer>
+      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon brand-image-wrap"><img className="brand-image" src={snowCodeMark} alt="SnowCode" /></span><span className="snowcode-wordmark"><strong>Snow<span>Code</span></strong><em>BUILD · CODE · GROW</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={17} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp"><MessageCircle size={17} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={17} /></a><a href={teamLinks.emailOne} aria-label="Email asyl68372@gmail.com" title="asyl68372@gmail.com"><Mail size={17} /></a><a href={teamLinks.emailTwo} aria-label="Email ferasmhyop2003@gmail.com" title="ferasmhyop2003@gmail.com"><Mail size={17} /></a></div><div className="footer-emails"><a href={teamLinks.emailOne}>asyl68372@gmail.com</a><a href={teamLinks.emailTwo}>ferasmhyop2003@gmail.com</a></div><span className="footer-year">© 2024 — 2026</span><span className="dev-credit">Dev By: SnowCodeTeam</span></footer>
 
       {activeProject && <div className="modal-backdrop" role="presentation" onClick={() => setActiveProject(null)}><div className="project-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setActiveProject(null)} aria-label="Close project"><X size={19} /></button><div className={`modal-art project-${activeProject.color}`}><span>{activeProject.number}</span><strong>{activeProject.title}</strong><i>{activeProject.glyph}</i></div><div className="modal-content"><span className="mono-note">CASE STUDY / {activeProject.eyebrow.toUpperCase()}</span><h3>{activeProject.title}</h3><p>{activeProject.description} This project is part of our selected work archive; a detailed case study is available when we start a conversation.</p><div className="tag-row">{activeProject.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><button className="button-primary" onClick={() => { setActiveProject(null); scrollTo("contact"); }}>Talk about a similar project <ArrowRight size={16} /></button></div></div></div>}
     </div>
