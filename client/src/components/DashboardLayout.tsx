@@ -26,6 +26,7 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Content desk", path: "/admin" },
@@ -47,8 +48,8 @@ export default function DashboardLayout({
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
   });
   const { loading, user, refresh } = useAuth();
-  const localLogin = trpc.auth.localLogin.useMutation({ onSuccess: () => refresh() });
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const localLogin = trpc.auth.localLogin.useMutation({ onSuccess: async () => { toast.success("Login successful — welcome to the content desk."); await refresh(); } });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "", rememberMe: false });
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
@@ -69,6 +70,7 @@ export default function DashboardLayout({
           <form onSubmit={async (event) => { event.preventDefault(); try { await localLogin.mutateAsync(loginForm); } catch { /* mutation error is rendered below */ } }} className="local-login-form">
             <label><span>Admin email</span><input type="email" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="Snowsteam@gmail.com" /></label>
             <label><span>Password</span><input type="password" autoComplete="current-password" value={loginForm.password} onChange={(event) => setLoginForm({ ...loginForm, password: event.target.value })} placeholder="••••••••" /></label>
+            <label className="remember-row"><input type="checkbox" checked={loginForm.rememberMe} onChange={(event) => setLoginForm({ ...loginForm, rememberMe: event.target.checked })} /><span>Remember me for 30 days</span></label>
             {localLogin.error && <div className="local-login-error">Invalid admin email or password.</div>}
             <Button type="submit" size="lg" className="w-full shadow-lg hover:shadow-xl transition-all" disabled={localLogin.isPending}>{localLogin.isPending ? "Checking..." : "Enter content desk"}</Button>
           </form>

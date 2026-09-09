@@ -10,6 +10,7 @@ import {
   CircleDot,
   Code2,
   ExternalLink,
+  Facebook,
   Github,
   Instagram,
   Layers3,
@@ -80,6 +81,13 @@ const projects: Project[] = [
     number: "03",
   },
 ];
+
+const teamLinks = {
+  github: "https://github.com/SnowCodeTeam",
+  facebook: "https://www.facebook.com/profile.php?id=61593709923569",
+  whatsapp: "https://wa.me/201501915633",
+  instagram: "https://www.instagram.com/snowcodeteam",
+};
 
 const snowflakes = Array.from({ length: 34 }, (_, index) => ({
   left: `${(index * 29) % 100}%`,
@@ -257,6 +265,7 @@ export default function Home() {
           <button onClick={() => scrollTo("work")}>Work</button>
           <button onClick={() => scrollTo("approach")}>Approach</button>
           <button onClick={() => scrollTo("contact")}>Contact</button>
+          <span className="team-social-nav" aria-label="Snow Code Team social links"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="Snow Code Team GitHub"><Github size={14} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Snow Code Team Facebook"><Facebook size={14} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="Snow Code Team WhatsApp"><MessageCircle size={14} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Snow Code Team Instagram"><Instagram size={14} /></a></span>
           <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>Admin</a>
           <button className="nav-availability" onClick={() => scrollTo("contact")}>
             <span className="status-dot" /> available for select projects
@@ -318,7 +327,7 @@ export default function Home() {
           <div className="projects-grid">
             {visibleProjects.map((project) => <ProjectCard key={project.title} project={project} onOpen={setActiveProject} />)}
           </div>
-          <div className="work-footer"><span>More work available on request</span><a href="https://github.com" target="_blank" rel="noreferrer">See our GitHub <Github size={16} /></a></div>
+          <div className="work-footer"><span>More work available on request</span><a href={teamLinks.github} target="_blank" rel="noreferrer">See our GitHub <Github size={16} /></a></div>
         </section>
 
         {teamQuery.data?.length ? <section className="team-section" id="team">
@@ -350,7 +359,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon"><span /></span><span><strong>SNOW CODE</strong><em>TEAM</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="mailto:hello@snowcode.team" aria-label="Email"><Mail size={17} /></a></div><span className="footer-year">© 2024 — 2026</span><span className="dev-credit">Dev By: SnowCodeTeam</span></footer>
+      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon"><span /></span><span><strong>SNOW CODE</strong><em>TEAM</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={17} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp"><MessageCircle size={17} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={17} /></a><a href="mailto:hello@snowcode.team" aria-label="Email"><Mail size={17} /></a></div><span className="footer-year">© 2024 — 2026</span><span className="dev-credit">Dev By: SnowCodeTeam</span></footer>
 
       {activeProject && <div className="modal-backdrop" role="presentation" onClick={() => setActiveProject(null)}><div className="project-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setActiveProject(null)} aria-label="Close project"><X size={19} /></button><div className={`modal-art project-${activeProject.color}`}><span>{activeProject.number}</span><strong>{activeProject.title}</strong><i>{activeProject.glyph}</i></div><div className="modal-content"><span className="mono-note">CASE STUDY / {activeProject.eyebrow.toUpperCase()}</span><h3>{activeProject.title}</h3><p>{activeProject.description} This project is part of our selected work archive; a detailed case study is available when we start a conversation.</p><div className="tag-row">{activeProject.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><button className="button-primary" onClick={() => { setActiveProject(null); scrollTo("contact"); }}>Talk about a similar project <ArrowRight size={16} /></button></div></div></div>}
     </div>

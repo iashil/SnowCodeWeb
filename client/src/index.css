@@ -324,3 +324,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .site-shell .statement-section, .site-shell .team-section { background: color-mix(in srgb, var(--site-surface, #dbe5d6) 52%, var(--site-background, #f5f4ee)); }
 .site-shell .nav-availability { background: color-mix(in srgb, var(--site-surface, #dbe5d6) 72%, transparent); }
 .site-shell .dev-credit { color: color-mix(in srgb, var(--site-primary, #1c2826) 42%, var(--site-background, #f5f4ee)); }
+
+.team-social-nav { align-items: center; border-left: 1px solid rgba(28,40,38,.15); display: flex; gap: 9px; margin-left: 2px; padding-left: 18px; }
+.team-social-nav a { align-items: center; color: #819087; display: inline-flex; transition: color 180ms var(--ease-out), transform 180ms var(--ease-out); }
+.team-social-nav a:hover { color: #1c2826; transform: translateY(-2px); }
+.remember-row { align-items: center; cursor: pointer; display: flex !important; flex-direction: row !important; gap: 9px; margin-top: -1px; }
+.remember-row input { accent-color: #1c2826; height: 15px; margin: 0; width: 15px; }
+.remember-row span { color: #7c8a81; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; }
+@media (max-width: 720px) { .team-social-nav { border-left: 0; margin: 8px 0 5px; padding-left: 0; } }

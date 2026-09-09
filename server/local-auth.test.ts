@@ -21,6 +21,14 @@ describe("local admin authentication", () => {
     expect(cookies[0]?.name).toBe(LOCAL_ADMIN_COOKIE);
   });
 
+  it("sets a 30-day cookie when remember me is selected", async () => {
+    const password = process.env.LOCAL_ADMIN_PASSWORD;
+    if (!password) return;
+    const { ctx, cookies } = authContext();
+    await appRouter.createCaller(ctx).auth.localLogin({ email: "Snowsteam@gmail.com", password, rememberMe: true });
+    expect(cookies[0]?.options.maxAge).toBe(1000 * 60 * 60 * 24 * 30);
+  });
+
   it("creates a signed session token with an expiry payload", () => {
     expect(createLocalAdminSession().split(".")).toHaveLength(2);
   });
