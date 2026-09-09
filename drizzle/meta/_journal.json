@@ -15,6 +15,13 @@
       "when": 1788919951039,
       "tag": "0001_motionless_gauntlet",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788922966679,
+      "tag": "0002_pink_namora",
+      "breakpoints": true
     }
   ]
 }

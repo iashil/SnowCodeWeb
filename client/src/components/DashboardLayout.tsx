@@ -58,7 +58,7 @@ export default function DashboardLayout({
     return <DashboardLayoutSkeleton />
   }
 
-  if (!user) {
+  if (!user || user.loginMethod !== "local") {
     return (
       <div className="local-login-shell">
         <div className="local-login-card">
@@ -67,7 +67,7 @@ export default function DashboardLayout({
           <h1>Welcome back.</h1>
           <p>Sign in with the local admin account to manage projects and messages.</p>
           <form onSubmit={async (event) => { event.preventDefault(); try { await localLogin.mutateAsync(loginForm); } catch { /* mutation error is rendered below */ } }} className="local-login-form">
-            <label><span>Email address</span><input type="email" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="admin@example.com" /></label>
+            <label><span>Admin ID</span><input type="text" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="Snowsteam" /></label>
             <label><span>Password</span><input type="password" autoComplete="current-password" value={loginForm.password} onChange={(event) => setLoginForm({ ...loginForm, password: event.target.value })} placeholder="••••••••" /></label>
             {localLogin.error && <div className="local-login-error">Invalid admin email or password.</div>}
             <Button type="submit" size="lg" className="w-full shadow-lg hover:shadow-xl transition-all" disabled={localLogin.isPending}>{localLogin.isPending ? "Checking..." : "Enter content desk"}</Button>

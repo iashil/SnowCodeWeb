@@ -5,14 +5,7 @@ import { authenticateLocalAdmin, createLocalAdminSession, LOCAL_ADMIN_COOKIE } f
 
 function authContext() {
   const cookies: Array<{ name: string; value: string; options: Record<string, unknown> }> = [];
-  const ctx: TrpcContext = {
-    user: null,
-    req: { protocol: "https", headers: {} } as TrpcContext["req"],
-    res: {
-      cookie: (name: string, value: string, options: Record<string, unknown>) => cookies.push({ name, value, options }),
-      clearCookie: () => undefined,
-    } as TrpcContext["res"],
-  };
+  const ctx: TrpcContext = { user: null, req: { protocol: "https", headers: {} } as TrpcContext["req"], res: { cookie: (name: string, value: string, options: Record<string, unknown>) => cookies.push({ name, value, options }), clearCookie: () => undefined } as TrpcContext["res"] };
   return { ctx, cookies };
 }
 
@@ -20,10 +13,10 @@ describe("local admin authentication", () => {
   it("accepts the configured credential when supplied for verification", async () => {
     const password = process.env.LOCAL_ADMIN_PASSWORD;
     if (!password) return;
-    const user = authenticateLocalAdmin("ashil@gmail.com", password);
+    const user = await authenticateLocalAdmin("Snowsteam", password);
     expect(user?.role).toBe("admin");
     const { ctx, cookies } = authContext();
-    const result = await appRouter.createCaller(ctx).auth.localLogin({ email: "ashil@gmail.com", password });
+    const result = await appRouter.createCaller(ctx).auth.localLogin({ email: "Snowsteam", password });
     expect(result.user.role).toBe("admin");
     expect(cookies[0]?.name).toBe(LOCAL_ADMIN_COOKIE);
   });
@@ -33,8 +26,8 @@ describe("local admin authentication", () => {
   });
 
   it("rejects incorrect credentials", async () => {
-    expect(authenticateLocalAdmin("other@example.com", "invalid-password")).toBeNull();
+    expect(await authenticateLocalAdmin("other-user", "invalid-password")).toBeNull();
     const { ctx } = authContext();
-    await expect(appRouter.createCaller(ctx).auth.localLogin({ email: "ashil@gmail.com", password: "invalid-password" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    await expect(appRouter.createCaller(ctx).auth.localLogin({ email: "Snowsteam", password: "invalid-password" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 });

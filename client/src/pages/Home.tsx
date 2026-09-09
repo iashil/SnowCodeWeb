@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import { trpc } from "@/lib/trpc";
 import {
   ArrowDown,
@@ -10,10 +11,12 @@ import {
   Code2,
   ExternalLink,
   Github,
+  Instagram,
   Layers3,
   Linkedin,
   Mail,
   Menu,
+  MessageCircle,
   MousePointer2,
   Orbit,
   Send,
@@ -35,6 +38,17 @@ type Project = {
   number: string;
   imageUrl?: string | null;
   previewUrl?: string | null;
+};
+
+type TeamMember = {
+  id: number;
+  name: string;
+  role: string;
+  avatarUrl?: string | null;
+  instagramUrl?: string | null;
+  whatsappUrl?: string | null;
+  githubUrl?: string | null;
+  linkedinUrl?: string | null;
 };
 
 const projects: Project[] = [
@@ -170,7 +184,21 @@ export default function Home() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const projectsQuery = trpc.projects.list.useQuery(undefined, { retry: false });
+  const teamQuery = trpc.site.team.useQuery(undefined, { retry: false });
+  const settingsQuery = trpc.site.settings.useQuery(undefined, { retry: false });
   const contactMutation = trpc.contacts.create.useMutation();
+  const trackVisit = trpc.site.trackVisit.useMutation();
+
+  useEffect(() => {
+    trackVisit.mutate({ path: "/" });
+  }, []);
+
+  const siteStyle = settingsQuery.data ? {
+    "--site-primary": settingsQuery.data.primaryColor,
+    "--site-accent": settingsQuery.data.accentColor,
+    "--site-background": settingsQuery.data.backgroundColor,
+    "--site-surface": settingsQuery.data.surfaceColor,
+  } as CSSProperties : undefined;
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
@@ -216,7 +244,7 @@ export default function Home() {
   };
 
   return (
-    <div className="site-shell">
+    <div className="site-shell" style={siteStyle}>
       <div className="ambient ambient-top" />
       <div className="ambient ambient-bottom" />
 
@@ -293,6 +321,13 @@ export default function Home() {
           <div className="work-footer"><span>More work available on request</span><a href="https://github.com" target="_blank" rel="noreferrer">See our GitHub <Github size={16} /></a></div>
         </section>
 
+        {teamQuery.data?.length ? <section className="team-section" id="team">
+          <div className="section-heading-row"><div><SectionLabel>the people</SectionLabel><h2>Good people<br /><em>make good work.</em></h2></div><span className="mono-note">[ OUR TEAM ]</span></div>
+          <div className="team-grid">
+            {(teamQuery.data as TeamMember[]).map((member) => <article className="team-card" key={member.id}><div className="team-card-avatar">{member.avatarUrl ? <img src={member.avatarUrl} alt={member.name} /> : <span>{member.name.slice(0, 1).toUpperCase()}</span>}</div><h3>{member.name}</h3><p>{member.role}</p><div className="team-socials">{member.instagramUrl && <a href={member.instagramUrl} target="_blank" rel="noreferrer" aria-label={`${member.name} Instagram`}><Instagram size={16} /></a>}{member.whatsappUrl && <a href={member.whatsappUrl} target="_blank" rel="noreferrer" aria-label={`${member.name} WhatsApp`}><MessageCircle size={16} /></a>}{member.githubUrl && <a href={member.githubUrl} target="_blank" rel="noreferrer" aria-label={`${member.name} GitHub`}><Github size={16} /></a>}{member.linkedinUrl && <a href={member.linkedinUrl} target="_blank" rel="noreferrer" aria-label={`${member.name} LinkedIn`}><Linkedin size={16} /></a>}</div></article>)}
+          </div>
+        </section> : null}
+
         <section className="marquee-section" aria-hidden="true">
           <div className="marquee-track">WE MAKE THINGS <span>✳</span> THAT LAST <span>✳</span> WE MAKE THINGS <span>✳</span> THAT LAST <span>✳</span></div>
         </section>
@@ -315,7 +350,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon"><span /></span><span><strong>SNOW CODE</strong><em>TEAM</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="mailto:hello@snowcode.team" aria-label="Email"><Mail size={17} /></a></div><span className="footer-year">© 2024 — 2026</span></footer>
+      <footer className="site-footer"><div className="footer-brand"><span className="brand-icon"><span /></span><span><strong>SNOW CODE</strong><em>TEAM</em></span></div><p>Quietly building the next useful thing.</p><div className="footer-socials"><a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="mailto:hello@snowcode.team" aria-label="Email"><Mail size={17} /></a></div><span className="footer-year">© 2024 — 2026</span><span className="dev-credit">Dev By: SnowCodeTeam</span></footer>
 
       {activeProject && <div className="modal-backdrop" role="presentation" onClick={() => setActiveProject(null)}><div className="project-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setActiveProject(null)} aria-label="Close project"><X size={19} /></button><div className={`modal-art project-${activeProject.color}`}><span>{activeProject.number}</span><strong>{activeProject.title}</strong><i>{activeProject.glyph}</i></div><div className="modal-content"><span className="mono-note">CASE STUDY / {activeProject.eyebrow.toUpperCase()}</span><h3>{activeProject.title}</h3><p>{activeProject.description} This project is part of our selected work archive; a detailed case study is available when we start a conversation.</p><div className="tag-row">{activeProject.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><button className="button-primary" onClick={() => { setActiveProject(null); scrollTo("contact"); }}>Talk about a similar project <ArrowRight size={16} /></button></div></div></div>}
     </div>

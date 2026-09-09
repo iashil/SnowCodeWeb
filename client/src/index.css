@@ -271,3 +271,56 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .back-to-site { color: #819086; display: block; font-family: "DM Mono", monospace; font-size: 9px; margin-top: 25px; text-align: center; }
 .back-to-site:hover { color: #31483a; }
 @media (max-width: 680px) { .nav-admin-link { border: 0; border-radius: 0; font-family: "DM Sans", sans-serif; font-size: 13px; padding: 10px 3px; text-align: left; } .local-login-card { padding: 27px 23px; } }
+
+.admin-top-actions { align-items: flex-end; display: flex; flex-direction: column; gap: 10px; }
+.admin-logout { align-items: center; background: transparent; border: 1px solid rgba(168,119,108,.35); border-radius: 999px; color: #a5766d; display: flex; font-family: "DM Mono", monospace; font-size: 9px; gap: 7px; padding: 8px 12px; transition: background 180ms var(--ease-out), color 180ms var(--ease-out); }
+.admin-logout:hover { background: #f2e2dd; color: #7e4e45; }
+.stats-panel { margin-bottom: 18px; }
+.stats-panel .mono-note { align-items: center; display: flex; gap: 7px; }
+.stats-grid { display: grid; gap: 10px; grid-template-columns: repeat(4, 1fr); }
+.stats-grid > div { background: rgba(229,238,226,.48); border: 1px solid rgba(39,55,48,.06); display: flex; flex-direction: column; gap: 8px; padding: 17px; }
+.stats-grid strong { color: #33463c; font-family: "Space Grotesk", sans-serif; font-size: 28px; font-weight: 500; letter-spacing: -.06em; }
+.stats-grid span { color: #87958b; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; }
+.team-panel { margin-top: 18px; }
+.team-panel .mono-note, .admin-settings-grid .mono-note { align-items: center; display: flex; gap: 7px; }
+.team-admin-layout { display: grid; gap: 25px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.team-form { border-right: 1px solid rgba(39,55,48,.09); padding-right: 25px; }
+.team-form-actions { align-items: center; display: flex; gap: 10px; }
+.admin-cancel { background: transparent; color: #819087; font-family: "DM Mono", monospace; font-size: 10px; padding: 11px; }
+.member-avatar { align-items: center; background: linear-gradient(135deg,#dbe5d6,#bdcdbd); border-radius: 50%; color: #536a59; display: flex; flex: 0 0 auto; font-family: "Space Grotesk", sans-serif; font-size: 17px; height: 47px; justify-content: center; overflow: hidden; width: 47px; }
+.member-avatar img { height: 100%; object-fit: cover; width: 100%; }
+.member-socials { align-items: center; color: #93a397; display: flex; gap: 7px; margin-top: 4px; }
+.admin-settings-grid { display: grid; gap: 18px; grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+.color-settings-form { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+.color-settings-form label { display: flex; flex-direction: column; gap: 8px; }
+.color-settings-form label > span { color: #7f8e83; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; }
+.color-input { align-items: center; display: flex; gap: 7px; }
+.color-input input[type="color"] { background: transparent; border: 0; cursor: pointer; height: 34px; padding: 0; width: 39px; }
+.color-input input[type="text"], .color-input input:not([type]) { background: rgba(245,244,238,.68); border: 1px solid #d1dbd0; border-radius: 2px; color: #66776b; font-family: "DM Mono", monospace; font-size: 10px; min-width: 0; padding: 9px; width: 100%; }
+.color-settings-form .admin-submit { grid-column: 1 / -1; }
+@media (max-width: 850px) { .team-admin-layout, .admin-settings-grid { grid-template-columns: 1fr; } .team-form { border-bottom: 1px solid rgba(39,55,48,.09); border-right: 0; padding-bottom: 24px; padding-right: 0; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .admin-top-actions { align-items: flex-start; margin-top: 20px; } .stats-grid, .color-settings-form { grid-template-columns: 1fr; } .color-settings-form .admin-submit { grid-column: auto; } }
+
+.team-section { background: #eef1e8; padding: 112px 8vw; }
+.team-section .section-heading-row { margin-bottom: 38px; }
+.team-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, 1fr); }
+.team-card { background: rgba(255,255,255,.46); border: 1px solid rgba(39,55,48,.1); padding: 18px; }
+.team-card-avatar { background: linear-gradient(135deg,#dbe5d6,#b8cbb9); border-radius: 2px; height: 190px; margin-bottom: 17px; overflow: hidden; position: relative; }
+.team-card-avatar img { height: 100%; object-fit: cover; width: 100%; }
+.team-card-avatar span { align-items: center; color: rgba(39,55,48,.55); display: flex; font-family: "Space Grotesk", sans-serif; font-size: 60px; height: 100%; justify-content: center; }
+.team-card h3 { color: #33463c; font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 500; letter-spacing: -.05em; margin: 0 0 5px; }
+.team-card p { color: #85948a; font-family: "DM Mono", monospace; font-size: 9px; margin: 0 0 15px; text-transform: uppercase; }
+.team-socials { align-items: center; display: flex; gap: 11px; }
+.team-socials a { color: #85988a; transition: color 180ms var(--ease-out), transform 180ms var(--ease-out); }
+.team-socials a:hover { color: #334b3c; transform: translateY(-2px); }
+.dev-credit { color: #a2afa4; font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: .05em; margin-top: 20px; text-transform: uppercase; }
+@media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .team-section { padding: 76px 7vw; } .team-grid { grid-template-columns: 1fr; } }
+
+.site-shell { background: var(--site-background, #f5f4ee); }
+.site-shell .brand-icon, .site-shell .button-primary, .site-shell .proof-avatars span:last-child { background-color: var(--site-primary, #1c2826); }
+.site-shell .hero-copy h1, .site-shell .section-heading-row h2, .site-shell .statement-lead, .site-shell .footer-brand { color: var(--site-primary, #1c2826); }
+.site-shell .hero-copy h1 span, .site-shell .section-heading-row h2 em, .site-shell .statement-lead i { color: var(--site-accent, #8ca68f); }
+.site-shell .statement-section, .site-shell .team-section { background: color-mix(in srgb, var(--site-surface, #dbe5d6) 52%, var(--site-background, #f5f4ee)); }
+.site-shell .nav-availability { background: color-mix(in srgb, var(--site-surface, #dbe5d6) 72%, transparent); }
+.site-shell .dev-credit { color: color-mix(in srgb, var(--site-primary, #1c2826) 42%, var(--site-background, #f5f4ee)); }
