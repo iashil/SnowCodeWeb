@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
-import { authenticateLocalAdmin, createLocalAdminSession, LOCAL_ADMIN_COOKIE } from "./localAuth";
+import { authenticateLocalAdmin, createLocalAdminSession, getLocalAdminFromRequest, LOCAL_ADMIN_COOKIE } from "./localAuth";
 
 function authContext() {
   const cookies: Array<{ name: string; value: string; options: Record<string, unknown> }> = [];
@@ -23,6 +23,12 @@ describe("local admin authentication", () => {
 
   it("creates a signed session token with an expiry payload", () => {
     expect(createLocalAdminSession().split(".")).toHaveLength(2);
+  });
+
+  it("keeps dotted email identifiers valid when reading the session cookie", () => {
+    const token = createLocalAdminSession();
+    const request = { headers: { cookie: `${LOCAL_ADMIN_COOKIE}=${token}` } } as never;
+    expect(getLocalAdminFromRequest(request)?.email).toBe("Snowsteam@gmail.com");
   });
 
   it("rejects incorrect credentials", async () => {
