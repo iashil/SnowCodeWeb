@@ -5,7 +5,7 @@ import { getLocalAdmin, upsertLocalAdmin } from "./db";
 import { ENV } from "./_core/env";
 
 export const LOCAL_ADMIN_COOKIE = "snow_local_admin";
-export const LOCAL_ADMIN_EMAIL = "Snowsteam";
+export const LOCAL_ADMIN_EMAIL = "Snowsteam@gmail.com";
 const BOOTSTRAP_PASSWORD_HASH = "112e694aa4dc30263b7d3b05f4285cfd:f276d264b9997269429fac442d71afb46ac221328206b12d62ed445ca1b1b5181a2453a4868617b4d83086cbf690253a2f810e71625c7ed0b126c6a96d0e9a6e";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 const SESSION_SECRET = ENV.cookieSecret || "snow-code-local-session-fallback";
