@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { trpc } from "@/lib/trpc";
 import {
   ArrowDown,
   ArrowRight,
@@ -24,6 +25,7 @@ import {
 import { toast } from "sonner";
 
 type Project = {
+  id?: number;
   title: string;
   eyebrow: string;
   description: string;
@@ -31,6 +33,8 @@ type Project = {
   color: string;
   glyph: string;
   number: string;
+  imageUrl?: string | null;
+  previewUrl?: string | null;
 };
 
 const projects: Project[] = [
@@ -134,6 +138,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (project: 
   return (
     <article className={`project-card project-${project.color}`}>
       <div className="project-art">
+        {project.imageUrl && <img className="project-image" src={project.imageUrl} alt="" />}
         <span className="project-number">{project.number}</span>
         <span className="project-glyph">{project.glyph}</span>
         <div className="art-grid" />
@@ -164,6 +169,8 @@ export default function Home() {
   const [filter, setFilter] = useState("All work");
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const projectsQuery = trpc.projects.list.useQuery(undefined, { retry: false });
+  const contactMutation = trpc.contacts.create.useMutation();
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
@@ -176,19 +183,31 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  const visibleProjects = useMemo(() => {
-    if (filter === "All work") return projects;
-    return projects.filter((project) => project.eyebrow === filter);
-  }, [filter]);
+  const liveProjects: Project[] = projectsQuery.data?.map((project, index) => ({
+    ...project,
+    number: String(index + 1).padStart(2, "0"),
+    color: project.color || "mint",
+    glyph: project.glyph || "✦",
+  })) ?? projects;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const visibleProjects = useMemo(() => {
+    if (filter === "All work") return liveProjects;
+    return liveProjects.filter((project) => project.eyebrow === filter);
+  }, [filter, projectsQuery.data]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!formState.name || !formState.email || !formState.message) {
       toast.error("Please complete the three fields so we can get back to you.");
       return;
     }
-    setSent(true);
-    toast.success("Message queued. We’ll be in touch soon.");
+    try {
+      await contactMutation.mutateAsync(formState);
+      setSent(true);
+      toast.success("Message received. We’ll be in touch soon.");
+    } catch {
+      toast.error("We couldn’t save your note. Please try again or email us directly.");
+    }
   };
 
   const scrollTo = (id: string) => {
