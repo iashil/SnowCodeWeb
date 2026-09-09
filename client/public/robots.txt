@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://snowcode-9eyt66fx.manus.space/sitemap.xml

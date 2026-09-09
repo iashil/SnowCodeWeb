@@ -27,6 +27,7 @@ import {
   Zap,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTheme } from "@/contexts/ThemeContext";
 
 type Project = {
   id?: number;
@@ -190,6 +191,8 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (project: 
 }
 
 export default function Home() {
+  const { theme, toggleTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState("All work");
@@ -200,6 +203,11 @@ export default function Home() {
   const settingsQuery = trpc.site.settings.useQuery(undefined, { retry: false });
   const contactMutation = trpc.contacts.create.useMutation();
   const trackVisit = trpc.site.trackVisit.useMutation();
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsLoading(false), 1100);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     trackVisit.mutate({ path: "/" });
@@ -257,6 +265,7 @@ export default function Home() {
 
   return (
     <div className="site-shell" style={siteStyle}>
+      {isLoading && <div className="brand-loader" role="status" aria-label="Loading SnowCode"><div className="brand-loader-card"><img src={snowCodeMark} alt="SnowCode" /><strong>Snow<span>Code</span></strong><small>BUILD · CODE · GROW</small><div className="loader-line"><span /></div></div></div>}
       <div className="ambient ambient-top" />
       <div className="ambient ambient-bottom" />
 
@@ -268,9 +277,11 @@ export default function Home() {
         <nav className={`nav-links ${menuOpen ? "nav-open" : ""}`}>
           <button onClick={() => scrollTo("work")}>Work</button>
           <button onClick={() => scrollTo("approach")}>Approach</button>
+          <a className="services-nav-link" href="/services" onClick={() => setMenuOpen(false)}>Services</a>
           <button onClick={() => scrollTo("contact")}>Contact</button>
           <span className="team-social-nav" aria-label="Snow Code Team social links"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="Snow Code Team GitHub"><Github size={14} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Snow Code Team Facebook"><Facebook size={14} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="Snow Code Team WhatsApp"><MessageCircle size={14} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Snow Code Team Instagram"><Instagram size={14} /></a><a href={teamLinks.emailOne} aria-label="Email asyl68372@gmail.com" title="asyl68372@gmail.com"><Mail size={14} /></a><a href={teamLinks.emailTwo} aria-label="Email ferasmhyop2003@gmail.com" title="ferasmhyop2003@gmail.com"><Mail size={14} /></a></span>
           <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>Admin</a>
+          <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>{theme === "dark" ? "☼" : "◐"}</button>
           <button className="nav-availability" onClick={() => scrollTo("contact")}>
             <span className="status-dot" /> available for select projects
           </button>
