@@ -1,4 +1,4 @@
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "./components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Admin from "@/pages/Admin";
 import NotFound from "@/pages/NotFound";
