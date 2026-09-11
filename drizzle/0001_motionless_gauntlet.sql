@@ -1,0 +1,1 @@
+ALTER TABLE `projects` MODIFY COLUMN `tags` text NOT NULL;
