@@ -1,15 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Separator } from "./separator";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
+} from "./sheet";
 const Skeleton = ({ className, ...props }: any) => (
   <div className={`animate-pulse rounded-md bg-gray-200 ${className || ""}`} {...props} />
 );
