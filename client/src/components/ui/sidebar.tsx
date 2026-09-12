@@ -14,10 +14,10 @@ const Skeleton = ({ className, ...props }: any) => (
   <div className={`animate-pulse rounded-md bg-gray-200 ${className || ""}`} {...props} />
 );
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+Tooltip,
+TooltipContent,
+TooltipProvider,
+TooltipTrigger,
 } from "./tooltip";
 const useMobile = () => false;
 import { cn } from "./lib/utils";
