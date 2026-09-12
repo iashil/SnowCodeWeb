@@ -13,12 +13,10 @@ import {
 const Skeleton = ({ className, ...props }: any) => (
   <div className={`animate-pulse rounded-md bg-gray-200 ${className || ""}`} {...props} />
 );
-import {
-Tooltip,
-TooltipContent,
-TooltipProvider,
-TooltipTrigger,
-} from "./tooltip";
+const TooltipProvider = ({ children }: any) => <>{children}</>;
+const Tooltip = ({ children }: any) => <>{children}</>;
+const TooltipTrigger = ({ children, ...props }: any) => <button type="button" {...props}>{children}</button>;
+const TooltipContent = ({ children, ...props }: any) => <div {...props}>{children}</div>;
 const useMobile = () => false;
 import { cn } from "./lib/utils";
 import { Slot } from "@radix-ui/react-slot";
