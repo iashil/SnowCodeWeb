@@ -10,15 +10,17 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Skeleton } from "./skeleton";
+const Skeleton = ({ className, ...props }: any) => (
+  <div className={`animate-pulse rounded-md bg-gray-200 ${className || ""}`} {...props} />
+);
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useIsMobile } from "@/hooks/useMobile";
-import { cn } from "@/lib/utils";
+} from "./tooltip";
+const useMobile = () => false;
+import { cn } from "./lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
