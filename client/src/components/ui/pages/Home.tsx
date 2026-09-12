@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "../lib/trpc";
 import {
   ArrowDown,
   ArrowRight,
