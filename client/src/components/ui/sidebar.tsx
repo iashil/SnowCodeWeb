@@ -9,16 +9,16 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "./sheet";
+import { Skeleton } from "./skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useIsMobile } from "@/hooks/useMobile";
-import { cn } from "@/lib/utils";
+} from "./tooltip";
+import { useIsMobile } from "../../hooks/useMobile";
+import { cn } from "../../lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";

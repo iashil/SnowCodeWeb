@@ -6,13 +6,13 @@ const useAuth = () => ({
   login: () => {},
   logout: () => {}
 });
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "../avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +25,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
-} from "@/components/ui/sidebar";
+} from "../sidebar";
 import { trpc } from "../lib/trpc";
 const useMobile = () => false;  
 import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
