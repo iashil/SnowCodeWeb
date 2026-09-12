@@ -1,6 +1,6 @@
-import DashboardLayout from "@/components/DashboardLayout";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
+import DashboardLayout from "../components/DashboardLayout";
+import { useAuth } from "../_core/hooks/useAuth";
+import { trpc } from "../lib/trpc";
 import { BarChart3, Check, Eye, FileImage, Github, Inbox, Instagram, KeyRound, Linkedin, Loader2, LogOut, MessageCircle, Palette, Plus, Send, Trash2, Upload, Users, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
