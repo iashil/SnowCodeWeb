@@ -27,7 +27,7 @@ import {
   Zap,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 type Project = {
   id?: number;
