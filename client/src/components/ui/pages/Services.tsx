@@ -1,7 +1,7 @@
 import { ArrowRight, Check, Code2, Globe2, Layers3, Moon, Sun, Smartphone, ShoppingBag, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
-import { useTheme } from "@/contexts/ThemeContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
 const mark = "/manus-storage/snowcode-mark_2b5b9404.png";
 
