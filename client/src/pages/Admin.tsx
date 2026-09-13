@@ -11,9 +11,85 @@ const emptyTeam = { name: "", role: "", avatarUrl: "", instagramUrl: "", whatsap
 type ProjectForm = typeof emptyProject;
 type TeamForm = typeof emptyTeam;
 
+const adminEnglishText = new WeakMap<Text, string>();
+const adminArabicText: Record<string, string> = {
+  "Make the useful": "اجعل المفيد",
+  "visible.": "ظاهرًا.",
+  "published work": "الأعمال المنشورة",
+  "new messages": "الرسائل الجديدة",
+  "site visits": "زيارات الموقع",
+  "SIMPLE STATISTICS": "إحصائيات مبسطة",
+  "A quiet view of momentum.": "نظرة هادئة على التقدم.",
+  "live counters": "عدادات مباشرة",
+  "total messages": "إجمالي الرسائل",
+  "projects in library": "المشاريع في المكتبة",
+  "team members": "أعضاء الفريق",
+  "tracked visits": "الزيارات المسجلة",
+  "NEW PROJECT": "مشروع جديد",
+  "EDIT PROJECT": "تعديل المشروع",
+  "Add a new story.": "أضف مشروعًا جديدًا.",
+  "Refine the story.": "حسّن تفاصيل المشروع.",
+  "PROJECT LIBRARY": "مكتبة المشاريع",
+  "What’s on the shelf.": "ما هو موجود في المكتبة.",
+  "TEAM DIRECTORY": "دليل الفريق",
+  "People behind the useful.": "الأشخاص خلف المنتجات المفيدة.",
+  "SITE COLORS": "ألوان الموقع",
+  "Set the atmosphere.": "اضبط أجواء الموقع.",
+  "SECURITY": "الأمان",
+  "Change your password.": "غيّر كلمة المرور.",
+  "INBOX": "صندوق الرسائل",
+  "Notes from good people.": "رسائل من أشخاص رائعين.",
+  "Title": "العنوان",
+  "Category / eyebrow": "التصنيف",
+  "Description": "الوصف",
+  "Preview URL": "رابط المعاينة",
+  "Accent": "اللون المميز",
+  "Tags": "الوسوم",
+  "Project image": "صورة المشروع",
+  "Visible on the public site": "إظهار في الموقع العام",
+  "Save changes": "حفظ التغييرات",
+  "Add project": "إضافة مشروع",
+  "Name": "الاسم",
+  "Role": "الدور الوظيفي",
+  "Avatar URL": "رابط الصورة الشخصية",
+  "Instagram": "إنستغرام",
+  "WhatsApp": "واتساب",
+  "GitHub": "جيت هب",
+  "LinkedIn": "لينكدإن",
+  "Show this member on the public site": "إظهار العضو في الموقع العام",
+  "Save member": "حفظ العضو",
+  "Add member": "إضافة عضو",
+  "Cancel": "إلغاء",
+  "Current password": "كلمة المرور الحالية",
+  "New password": "كلمة المرور الجديدة",
+  "Confirm new password": "تأكيد كلمة المرور الجديدة",
+  "Update password": "تحديث كلمة المرور",
+  "Save site colors": "حفظ ألوان الموقع",
+  "Mark read": "تحديد كمقروءة",
+  "Archive": "أرشفة",
+  "No projects yet. Add the first story.": "لا توجد مشاريع بعد. أضف أول مشروع.",
+  "Add the first team member.": "أضف أول عضو للفريق.",
+  "Your inbox is quiet for now.": "صندوق الرسائل فارغ حاليًا.",
+};
+
 function AdminContent() {
   const { user, logout } = useAuth();
   const { isArabic } = useLanguage();
+  useEffect(() => {
+    const root = document.querySelector(".admin-page");
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node: Node | null = walker.nextNode();
+    while (node) {
+      const textNode = node as Text;
+      const original = adminEnglishText.get(textNode) ?? textNode.textContent ?? "";
+      if (!adminEnglishText.has(textNode)) adminEnglishText.set(textNode, original);
+      const clean = original.trim();
+      const translated = isArabic ? adminArabicText[clean] : original;
+      if (translated && clean) textNode.textContent = original.replace(clean, translated);
+      node = walker.nextNode();
+    }
+  }, [isArabic]);
   const utils = trpc.useUtils();
   const projectsQuery = trpc.projects.adminList.useQuery(undefined, { enabled: user?.role === "admin" });
   const contactsQuery = trpc.contacts.list.useQuery(undefined, { enabled: user?.role === "admin" });
