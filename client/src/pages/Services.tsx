@@ -1,7 +1,7 @@
 import { ArrowRight, Check, Code2, Globe2, Layers3, Moon, Sun, Smartphone, ShoppingBag, Sparkles } from "lucide-react";
-import { useState } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const mark = "/manus-storage/snowcode-mark_2b5b9404.png";
 
@@ -16,10 +16,10 @@ const services: Service[] = [
 ];
 
 export default function Services() {
-  const [arabic, setArabic] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { isArabic: arabic, toggleLanguage } = useLanguage();
   return <div className={`services-page ${arabic ? "services-ar" : ""}`} dir={arabic ? "rtl" : "ltr"}>
-    <header className="services-nav"><Link href="/" className="services-brand"><img src={mark} alt="SnowCode" /><span><strong>Snow<span>Code</span></strong><small>BUILD · CODE · GROW</small></span></Link><nav><Link href="/">{arabic ? "الرئيسية" : "Home"}</Link><a href="#services">{arabic ? "الخدمات" : "Services"}</a><a href="/#contact">{arabic ? "تواصل" : "Contact"}</a><button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">{theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}</button><button className="language-toggle" onClick={() => setArabic(!arabic)}>{arabic ? "EN" : "عربي"}</button></nav></header>
+    <header className="services-nav"><Link href="/" className="services-brand"><img src={mark} alt="SnowCode" /><span><strong>Snow<span>Code</span></strong><small>BUILD · CODE · GROW</small></span></Link><nav><Link href="/">{arabic ? "الرئيسية" : "Home"}</Link><a href="#services">{arabic ? "الخدمات" : "Services"}</a><a href="/#contact">{arabic ? "تواصل" : "Contact"}</a><button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">{theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}</button><button className="language-toggle" onClick={toggleLanguage}>{arabic ? "EN" : "عربي"}</button></nav></header>
     <main>
       <section className="services-hero"><span className="services-kicker">SnowCode · {arabic ? "خدمات رقمية" : "digital services"}</span><h1>{arabic ? <>نبني منتجات<br /><em>تنمو معك.</em></> : <>Build products<br /><em>that move you forward.</em></>}</h1><p>{arabic ? "من الفكرة إلى الإطلاق، نساعد الفرق الطموحة على تحويل المشاكل المعقدة إلى تجارب رقمية مفيدة." : "From the first idea to the next release, we help ambitious teams turn complex problems into useful digital experiences."}</p><a className="services-cta" href="/#contact">{arabic ? "ابدأ محادثة" : "Start a conversation"} <ArrowRight size={16} /></a></section>
       <section className="services-grid" id="services">{services.map(({ icon: Icon, enTitle, arTitle, enBody, arBody, points }) => <article className="service-detail" key={enTitle}><div className="service-icon"><Icon size={22} /></div><span className="service-index">0{services.indexOf(services.find((item) => item.enTitle === enTitle)!) + 1}</span><h2>{arabic ? arTitle : enTitle}</h2><p>{arabic ? arBody : enBody}</p><ul>{points.map((point) => <li key={point}><Check size={14} />{arabic ? ({ "Strategy and information architecture": "الاستراتيجية وهيكلة المحتوى", "Responsive UI design": "تصميم واجهات متجاوبة", "Production-ready React development": "تطوير React جاهز للإنتاج", "iOS and Android product flows": "تجارب iOS وAndroid", "Prototype and interaction design": "النمذجة وتصميم التفاعل", "Scalable app foundations": "بنية تطبيق قابلة للتوسع", "Storefront and checkout UX": "تجربة المتجر والدفع", "Catalog and content systems": "أنظمة الكتالوج والمحتوى", "Conversion-minded interfaces": "واجهات تركز على التحويل", "Dashboards and workflows": "لوحات التحكم وسير العمل", "Role-based admin experiences": "تجارب إدارة حسب الصلاحيات", "Data and API integrations": "تكاملات البيانات وواجهات API", "Visual direction and identity": "التوجيه البصري والهوية", "Design systems and components": "أنظمة التصميم والمكونات", "Content-ready brand guidance": "إرشادات هوية جاهزة للمحتوى", "Performance and accessibility": "الأداء وسهولة الوصول", "Feature planning and delivery": "تخطيط وتسليم الميزات", "Reliable technical maintenance": "صيانة تقنية موثوقة" } as Record<string, string>)[point] : point}</li>)}</ul></article>)}</section>

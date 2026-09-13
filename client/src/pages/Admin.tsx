@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { BarChart3, Check, Eye, FileImage, Github, Inbox, Instagram, KeyRound, Linkedin, Loader2, LogOut, MessageCircle, Palette, Plus, Send, Trash2, Upload, Users, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const emptyProject = { title: "", eyebrow: "", description: "", previewUrl: "", tags: "", color: "mint", glyph: "✦", sortOrder: 0, isPublished: true };
 const emptyTeam = { name: "", role: "", avatarUrl: "", instagramUrl: "", whatsappUrl: "", githubUrl: "", linkedinUrl: "", sortOrder: 0, isVisible: true };
@@ -12,6 +13,7 @@ type TeamForm = typeof emptyTeam;
 
 function AdminContent() {
   const { user, logout } = useAuth();
+  const { isArabic } = useLanguage();
   const utils = trpc.useUtils();
   const projectsQuery = trpc.projects.adminList.useQuery(undefined, { enabled: user?.role === "admin" });
   const contactsQuery = trpc.contacts.list.useQuery(undefined, { enabled: user?.role === "admin" });
@@ -54,7 +56,7 @@ function AdminContent() {
   const handlePasswordChange = async (event: React.FormEvent) => { event.preventDefault(); if (passwordForm.newPassword.length < 8) { toast.error("The new password must be at least 8 characters."); return; } if (passwordForm.newPassword !== passwordForm.confirmPassword) { toast.error("The password confirmation does not match."); return; } try { await changePassword.mutateAsync({ currentPassword: passwordForm.currentPassword, newPassword: passwordForm.newPassword }); toast.success("Password changed successfully."); setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" }); } catch { toast.error("The current password is incorrect or the change could not be saved."); } };
   const handleLogout = async () => { try { await logout(); window.location.href = "/admin"; } catch { toast.error("Could not end the session."); } };
 
-  return <div className="admin-page">
+  return <div className={`admin-page ${isArabic ? "admin-page-ar" : ""}`} dir={isArabic ? "rtl" : "ltr"}>
     <div className="admin-topbar"><div><span className="mono-note">SNOW CODE / CONTENT DESK</span><h1>Make the useful<br /><em>visible.</em></h1></div><div className="admin-top-actions"><div className="admin-status"><span className="status-dot" /> {user ? `Signed in as ${user.name || user.email}` : "Checking access"}</div><button className="admin-logout" onClick={handleLogout}><LogOut size={14} /> Log out</button></div></div>
     <div className="admin-metrics"><div><span><FileImage size={16} /> published work</span><strong>{statsQuery.data?.publishedProjects ?? projectsQuery.data?.filter((project) => project.isPublished).length ?? 0}</strong></div><div><span><Inbox size={16} /> new messages</span><strong>{statsQuery.data?.newMessages ?? newMessages}</strong></div><div><span><Eye size={16} /> site visits</span><strong>{statsQuery.data?.visits ?? 0}</strong></div></div>
     <section className="admin-panel stats-panel"><div className="panel-heading"><div><span className="mono-note"><BarChart3 size={13} /> SIMPLE STATISTICS</span><h2>A quiet view of momentum.</h2></div><span className="panel-count">live counters</span></div><div className="stats-grid"><div><strong>{statsQuery.data?.messages ?? 0}</strong><span>total messages</span></div><div><strong>{statsQuery.data?.projects ?? 0}</strong><span>projects in library</span></div><div><strong>{statsQuery.data?.teamMembers ?? 0}</strong><span>team members</span></div><div><strong>{statsQuery.data?.visits ?? 0}</strong><span>tracked visits</span></div></div></section>

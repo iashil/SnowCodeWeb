@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Project = {
   id?: number;
@@ -192,6 +193,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (project: 
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
+  const { isArabic, toggleLanguage } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
@@ -264,7 +266,7 @@ export default function Home() {
   };
 
   return (
-    <div className="site-shell" style={siteStyle}>
+    <div className={`site-shell ${isArabic ? "site-ar" : ""}`} dir={isArabic ? "rtl" : "ltr"} style={siteStyle}>
       {isLoading && <div className="brand-loader" role="status" aria-label="Loading SnowCode"><div className="brand-loader-card"><img src={snowCodeMark} alt="SnowCode" /><strong>Snow<span>Code</span></strong><small>BUILD · CODE · GROW</small><div className="loader-line"><span /></div></div></div>}
       <div className="ambient ambient-top" />
       <div className="ambient ambient-bottom" />
@@ -275,15 +277,16 @@ export default function Home() {
           <span className="brand-text snowcode-wordmark"><strong>Snow<span>Code</span></strong><em>BUILD · CODE · GROW</em></span>
         </button>
         <nav className={`nav-links ${menuOpen ? "nav-open" : ""}`}>
-          <button onClick={() => scrollTo("work")}>Work</button>
-          <button onClick={() => scrollTo("approach")}>Approach</button>
-          <a className="services-nav-link" href="/services" onClick={() => setMenuOpen(false)}>Services</a>
-          <button onClick={() => scrollTo("contact")}>Contact</button>
+          <button onClick={() => scrollTo("work")}>{isArabic ? "الأعمال" : "Work"}</button>
+          <button onClick={() => scrollTo("approach")}>{isArabic ? "منهجيتنا" : "Approach"}</button>
+          <a className="services-nav-link" href="/services" onClick={() => setMenuOpen(false)}>{isArabic ? "الخدمات" : "Services"}</a>
+          <button onClick={() => scrollTo("contact")}>{isArabic ? "تواصل" : "Contact"}</button>
           <span className="team-social-nav" aria-label="Snow Code Team social links"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="Snow Code Team GitHub"><Github size={14} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Snow Code Team Facebook"><Facebook size={14} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="Snow Code Team WhatsApp"><MessageCircle size={14} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Snow Code Team Instagram"><Instagram size={14} /></a><a href={teamLinks.emailOne} aria-label="Email asyl68372@gmail.com" title="asyl68372@gmail.com"><Mail size={14} /></a><a href={teamLinks.emailTwo} aria-label="Email ferasmhyop2003@gmail.com" title="ferasmhyop2003@gmail.com"><Mail size={14} /></a></span>
-          <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>Admin</a>
+          <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>{isArabic ? "الإدارة" : "Admin"}</a>
           <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>{theme === "dark" ? "☼" : "◐"}</button>
+          <button className="language-toggle" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button>
           <button className="nav-availability" onClick={() => scrollTo("contact")}>
-            <span className="status-dot" /> available for select projects
+            <span className="status-dot" /> {isArabic ? "متاحون لمشاريع مختارة" : "available for select projects"}
           </button>
         </nav>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
@@ -294,12 +297,12 @@ export default function Home() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <SectionLabel>independent digital studio · est. 2024</SectionLabel>
-            <h1>Good ideas<br /><span>deserve</span><br />good code.</h1>
-            <p className="hero-intro">Snow Code Team builds the quiet, capable digital products behind ambitious ideas.</p>
+            <SectionLabel>{isArabic ? "استوديو رقمي مستقل · منذ 2024" : "independent digital studio · est. 2024"}</SectionLabel>
+            <h1>{isArabic ? <>الأفكار الجيدة<br /><span>تستحق</span><br />كودًا قويًا.</> : <>Good ideas<br /><span>deserve</span><br />good code.</>}</h1>
+            <p className="hero-intro">{isArabic ? "نبني منتجات رقمية واضحة وعملية تساعد الفرق الطموحة على النمو." : "Snow Code Team builds the quiet, capable digital products behind ambitious ideas."}</p>
             <div className="hero-actions">
-              <button className="button-primary" onClick={() => scrollTo("work")}>Explore our work <ArrowDown size={16} /></button>
-              <button className="button-quiet" onClick={() => scrollTo("contact")}><span className="quiet-icon"><MousePointer2 size={15} /></span> Start a conversation</button>
+              <button className="button-primary" onClick={() => scrollTo("work")}>{isArabic ? "استكشف أعمالنا" : "Explore our work"} <ArrowDown size={16} /></button>
+              <button className="button-quiet" onClick={() => scrollTo("contact")}><span className="quiet-icon"><MousePointer2 size={15} /></span> {isArabic ? "ابدأ محادثة" : "Start a conversation"}</button>
             </div>
             <div className="hero-proof">
               <div className="proof-avatars"><span>SC</span><span>NB</span><span>+</span></div>

@@ -27,6 +27,7 @@ import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Content desk", path: "/admin" },
@@ -48,6 +49,7 @@ export default function DashboardLayout({
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
   });
   const { loading, user, refresh } = useAuth();
+  const { isArabic } = useLanguage();
   const localLogin = trpc.auth.localLogin.useMutation({ onSuccess: async () => { toast.success("Login successful — welcome to the content desk."); await refresh(); } });
   const [loginForm, setLoginForm] = useState({ email: "", password: "", rememberMe: false });
 
@@ -80,8 +82,9 @@ export default function DashboardLayout({
     );
   }
 
-  return (
-    <SidebarProvider
+    return (
+      <div className="admin-locale-shell" dir={isArabic ? "rtl" : "ltr"}>
+      <SidebarProvider
       style={
         {
           "--sidebar-width": `${sidebarWidth}px`,
@@ -91,7 +94,8 @@ export default function DashboardLayout({
       <DashboardLayoutContent setSidebarWidth={setSidebarWidth}>
         {children}
       </DashboardLayoutContent>
-    </SidebarProvider>
+      </SidebarProvider>
+      </div>
   );
 }
 
@@ -112,6 +116,10 @@ function DashboardLayoutContent({
   const sidebarRef = useRef<HTMLDivElement>(null);
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
+  const { isArabic, toggleLanguage } = useLanguage();
+  const localizedLabel = (item: typeof menuItems[number]) => isArabic
+    ? (item.path === "/admin" ? "لوحة المحتوى" : "الموقع العام")
+    : item.label;
 
   useEffect(() => {
     if (isCollapsed) {
@@ -185,13 +193,13 @@ function DashboardLayoutContent({
                     <SidebarMenuButton
                       isActive={isActive}
                       onClick={() => setLocation(item.path)}
-                      tooltip={item.label}
+                      tooltip={localizedLabel(item)}
                       className={`h-10 transition-all font-normal`}
                     >
                       <item.icon
                         className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
                       />
-                      <span>{item.label}</span>
+                      <span>{localizedLabel(item)}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
@@ -200,6 +208,7 @@ function DashboardLayoutContent({
           </SidebarContent>
 
           <SidebarFooter className="p-3">
+            <button className="admin-sidebar-language" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}><span>{isArabic ? "EN" : "عربي"}</span><small>{isArabic ? "English interface" : "الواجهة العربية"}</small></button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -248,14 +257,18 @@ function DashboardLayoutContent({
               <div className="flex items-center gap-3">
                 <div className="flex flex-col gap-1">
                   <span className="tracking-tight text-foreground">
-                    {activeMenuItem?.label ?? "Menu"}
+                    {activeMenuItem ? localizedLabel(activeMenuItem) : (isArabic ? "القائمة" : "Menu")}
                   </span>
+                  <button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button>
                 </div>
               </div>
             </div>
           </div>
         )}
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-4">
+          <div className="admin-desktop-language"><button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button></div>
+          {children}
+        </main>
       </SidebarInset>
     </>
   );
