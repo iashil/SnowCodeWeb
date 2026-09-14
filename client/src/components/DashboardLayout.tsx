@@ -66,15 +66,15 @@ export default function DashboardLayout({
       <div className="local-login-shell">
         <div className="local-login-card">
           <div className="local-login-brand"><span className="brand-icon brand-image-wrap"><img className="brand-image" src="/manus-storage/snowcode-mark_2b5b9404.png" alt="SnowCode" /></span><span className="brand-text snowcode-wordmark"><strong>Snow<span>Code</span></strong><em>BUILD · CODE · GROW</em></span></div>
-          <span className="mono-note">PRIVATE CONTENT DESK</span>
-          <h1>Welcome back.</h1>
-          <p>Sign in with the local admin account to manage projects and messages.</p>
+          <span className="mono-note">{isArabic ? "لوحة محتوى خاصة" : "PRIVATE CONTENT DESK"}</span>
+          <h1>{isArabic ? "مرحبًا بعودتك." : "Welcome back."}</h1>
+          <p>{isArabic ? "سجّل الدخول لإدارة المشاريع والرسائل والمحتوى." : "Sign in with the local admin account to manage projects and messages."}</p>
           <form onSubmit={async (event) => { event.preventDefault(); try { await localLogin.mutateAsync(loginForm); } catch { /* mutation error is rendered below */ } }} className="local-login-form">
-            <label><span>Admin email</span><input type="email" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="Snowsteam@gmail.com" /></label>
-            <label><span>Password</span><input type="password" autoComplete="current-password" value={loginForm.password} onChange={(event) => setLoginForm({ ...loginForm, password: event.target.value })} placeholder="••••••••" /></label>
-            <label className="remember-row"><input type="checkbox" checked={loginForm.rememberMe} onChange={(event) => setLoginForm({ ...loginForm, rememberMe: event.target.checked })} /><span>Remember me for 30 days</span></label>
-            {localLogin.error && <div className="local-login-error">Invalid admin email or password.</div>}
-            <Button type="submit" size="lg" className="w-full shadow-lg hover:shadow-xl transition-all" disabled={localLogin.isPending}>{localLogin.isPending ? "Checking..." : "Enter content desk"}</Button>
+            <label><span>{isArabic ? "بريد المشرف" : "Admin email"}</span><input type="email" autoComplete="username" value={loginForm.email} onChange={(event) => setLoginForm({ ...loginForm, email: event.target.value })} placeholder="Snowsteam@gmail.com" /></label>
+            <label><span>{isArabic ? "كلمة المرور" : "Password"}</span><input type="password" autoComplete="current-password" value={loginForm.password} onChange={(event) => setLoginForm({ ...loginForm, password: event.target.value })} placeholder="••••••••" /></label>
+            <label className="remember-row"><input type="checkbox" checked={loginForm.rememberMe} onChange={(event) => setLoginForm({ ...loginForm, rememberMe: event.target.checked })} /><span>{isArabic ? "تذكرني لمدة 30 يومًا" : "Remember me for 30 days"}</span></label>
+            {localLogin.error && <div className="local-login-error">{isArabic ? "البريد أو كلمة المرور غير صحيحة." : "Invalid admin email or password."}</div>}
+            <Button type="submit" size="lg" className="w-full shadow-lg hover:shadow-xl transition-all" disabled={localLogin.isPending}>{localLogin.isPending ? (isArabic ? "جارٍ التحقق..." : "Checking...") : (isArabic ? "دخول إلى لوحة المحتوى" : "Enter content desk")}</Button>
           </form>
           <a className="back-to-site" href="/">← back to public site</a>
         </div>

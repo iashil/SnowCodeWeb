@@ -318,12 +318,12 @@ export default function Home() {
         </section>
 
         <section className="statement-section" id="approach">
-          <div className="statement-top"><SectionLabel>what we believe</SectionLabel><span className="mono-note">[ 001 — 004 ]</span></div>
+          <div className="statement-top"><SectionLabel>{isArabic ? "ما نؤمن به" : "what we believe"}</SectionLabel><span className="mono-note">[ 001 — 004 ]</span></div>
           <div className="statement-grid">
-            <p className="statement-lead">We make digital things feel <i>inevitable.</i></p>
+            <p className="statement-lead">{isArabic ? <>نجعل الأشياء الرقمية تبدو <i>بديهية.</i></> : <>We make digital things feel <i>inevitable.</i></>}</p>
             <div className="statement-copy">
-              <p>Not louder. Not busier. Just clearer. We pair thoughtful design with sturdy engineering to turn complicated problems into products people actually enjoy using.</p>
-              <button className="text-link" onClick={() => scrollTo("contact")}>How we work <ArrowRight size={15} /></button>
+              <p>{isArabic ? "ليست أعلى صوتًا ولا أكثر ازدحامًا، بل أوضح. نمزج التصميم المدروس بالهندسة المتينة لتحويل المشكلات المعقدة إلى منتجات يستمتع الناس باستخدامها." : "Not louder. Not busier. Just clearer. We pair thoughtful design with sturdy engineering to turn complicated problems into products people actually enjoy using."}</p>
+              <button className="text-link" onClick={() => scrollTo("contact")}>{isArabic ? "كيف نعمل" : "How we work"} <ArrowRight size={15} /></button>
             </div>
           </div>
           <div className="principles-grid">
@@ -335,10 +335,10 @@ export default function Home() {
 
         <section className="work-section" id="work">
           <div className="section-heading-row">
-            <div><SectionLabel>selected work</SectionLabel><h2>Built for the<br /><em>long run.</em></h2></div>
+            <div><SectionLabel>{isArabic ? "أعمال مختارة" : "selected work"}</SectionLabel><h2>{isArabic ? <>نبني للمستقبل<br /><em>طويل المدى.</em></> : <>Built for the<br /><em>long run.</em></>}</h2></div>
             <div className="work-controls">
-              {['All work', 'Operations platform', 'E-commerce experience', 'Analytics system'].map((item) => (
-                <button key={item} className={filter === item ? "filter-active" : ""} onClick={() => setFilter(item)}>{item}</button>
+              {(isArabic ? [{ value: "All work", label: "كل الأعمال" }, { value: "Operations platform", label: "منصة تشغيل" }, { value: "E-commerce experience", label: "تجارة إلكترونية" }, { value: "Analytics system", label: "نظام تحليلات" }] : ["All work", "Operations platform", "E-commerce experience", "Analytics system"].map((item) => ({ value: item, label: item }))).map((item) => (
+                <button key={item.value} className={filter === item.value ? "filter-active" : ""} onClick={() => setFilter(item.value)}>{item.label}</button>
               ))}
             </div>
           </div>
