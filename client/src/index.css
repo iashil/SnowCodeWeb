@@ -427,3 +427,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @media (max-width: 850px) { .admin-page-ar .team-form { border-bottom: 1px solid rgba(39,55,48,.09); border-left: 0; padding-bottom: 24px; padding-left: 0; } }
 .dark .admin-language-button, .dark .admin-sidebar-language { background: rgba(56,189,248,.12); border-color: rgba(56,189,248,.32); color: #70c9ff; }
 .dark .admin-sidebar-language small { color: #9eb2c6; }
+
+.admin-sidebar-tools { display: grid; gap: 7px; margin-bottom: 12px; }
+.admin-sidebar-tool { align-items: center; background: transparent; border: 1px solid rgba(39,55,48,.14); border-radius: 9px; color: #53645d; cursor: pointer; display: flex; gap: 8px; min-height: 32px; padding: 7px 9px; text-align: start; transition: background 180ms var(--ease-out), color 180ms var(--ease-out), border-color 180ms var(--ease-out); width: 100%; }
+.admin-sidebar-tool:hover { background: rgba(35,142,232,.09); border-color: rgba(35,142,232,.28); color: #238ee8; }
+.admin-page { background: #f5f4ee; color: #1c2826; min-height: 100%; }
+.admin-panel, .admin-topbar, .admin-metrics > div { background: #fffdf8; color: #1c2826; }
+.admin-panel input, .admin-panel textarea, .admin-panel select { background: #fff; color: #1c2826; border-color: rgba(39,55,48,.18); }
+.admin-panel input::placeholder, .admin-panel textarea::placeholder { color: #8b9891; }
+.admin-sidebar-tool span:last-child { font-size: 10px; }
+.dark .admin-page { background: #071421; color: #e4f0f7; }
+.dark .admin-topbar, .dark .admin-metrics > div, .dark .admin-panel { background: #0c2236; border-color: rgba(159,201,229,.17); color: #e4f0f7; box-shadow: 0 16px 40px rgba(0,0,0,.18); }
+.dark .admin-page h1, .dark .admin-page h2, .dark .admin-page strong, .dark .admin-page label, .dark .admin-page .panel-heading, .dark .admin-page .admin-list-copy span { color: #e4f0f7; }
+.dark .admin-page p, .dark .admin-page .admin-status, .dark .admin-page .panel-count, .dark .admin-page .admin-list-copy small, .dark .admin-page .message-meta span, .dark .admin-page time { color: #9eb2c6; }
+.dark .admin-panel input, .dark .admin-panel textarea, .dark .admin-panel select { background: #071421; color: #e4f0f7; border-color: rgba(159,201,229,.25); }
+.dark .admin-panel input::placeholder, .dark .admin-panel textarea::placeholder { color: #718ba0; }
+.dark .admin-panel .admin-list, .dark .admin-panel .message-item, .dark .admin-panel .team-form { border-color: rgba(159,201,229,.16); }
+.dark .admin-list-item:hover, .dark .message-item:hover { background: rgba(56,189,248,.07); }
+.dark .admin-sidebar-tool { border-color: rgba(159,201,229,.22); color: #b8cddd; }
+.dark .admin-sidebar-tool:hover { background: rgba(56,189,248,.13); border-color: rgba(56,189,248,.4); color: #70c9ff; }
+.dark .admin-page .admin-submit { background: #38bdf8; color: #071421; }
+.dark .admin-page .admin-submit:hover { background: #70c9ff; }
+.dark .admin-page .admin-cancel, .dark .admin-page .icon-button { color: #b8cddd; }
+.dark .admin-page .message-actions button, .dark .admin-page .admin-list-actions button { background: #12314a; color: #b8ddf4; border-color: rgba(159,201,229,.2); }
+.dark .admin-page .message-actions .danger-action, .dark .admin-page .admin-list-actions .danger-action { color: #ff9b9b; }
+.message-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.message-tab { background: transparent; border: 1px solid rgba(39,55,48,.16); border-radius: 999px; color: #64736c; cursor: pointer; font-family: "DM Mono", monospace; font-size: 10px; padding: 8px 12px; }
+.message-tab.active { background: #1c2826; border-color: #1c2826; color: #fff; }
+.dark .message-tab { border-color: rgba(159,201,229,.24); color: #aac0d0; }
+.dark .message-tab.active { background: #38bdf8; border-color: #38bdf8; color: #071421; }
+.message-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.message-actions .danger-message { color: #a85454; }
+.dark .message-actions .danger-message { color: #ff9b9b; }
+.message-retention-note { color: #7b8a82; font-size: 11px; margin: -3px 0 14px; }
+.dark .message-retention-note { color: #9eb2c6; }

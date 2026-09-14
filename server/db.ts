@@ -1,4 +1,4 @@
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { asc, desc, eq, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { contacts, InsertContact, InsertProject, InsertTeamMember, InsertUser, localAdmins, pageViews, projects, siteSettings, teamMembers, users } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -42,7 +42,9 @@ export async function updateProject(id: number, project: Partial<InsertProject>)
 export async function deleteProject(id: number) { const db = await getDb(); if (!db) throw new Error("Database is not configured"); await db.delete(projects).where(eq(projects.id, id)); return { success: true } as const; }
 
 export async function createContact(contact: InsertContact) { const db = await getDb(); if (!db) throw new Error("Database is not configured"); const result = await db.insert(contacts).values(contact); return { id: Number(result[0].insertId), ...contact }; }
-export async function listContacts() { const db = await getDb(); if (!db) return []; return db.select().from(contacts).orderBy(desc(contacts.createdAt)); }
+export async function purgeExpiredContacts() { const db = await getDb(); if (!db) return { success: false, deleted: 0 }; const cutoff = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000); const result = await db.delete(contacts).where(lt(contacts.createdAt, cutoff)); return { success: true, deleted: Number(result[0]?.affectedRows ?? 0) }; }
+export async function listContacts() { const db = await getDb(); if (!db) return []; await purgeExpiredContacts().catch((error) => console.warn("[Contacts] Retention cleanup skipped:", error)); return db.select().from(contacts).orderBy(desc(contacts.createdAt)); }
+export async function deleteContact(id: number) { const db = await getDb(); if (!db) throw new Error("Database is not configured"); await db.delete(contacts).where(eq(contacts.id, id)); return { success: true } as const; }
 export async function updateContactStatus(id: number, status: "new" | "read" | "archived") { const db = await getDb(); if (!db) throw new Error("Database is not configured"); await db.update(contacts).set({ status, updatedAt: new Date() }).where(eq(contacts.id, id)); return (await db.select().from(contacts).where(eq(contacts.id, id)).limit(1))[0]; }
 
 export async function listVisibleTeam() { const db = await getDb(); if (!db) return []; return db.select().from(teamMembers).where(eq(teamMembers.isVisible, 1)).orderBy(asc(teamMembers.sortOrder), asc(teamMembers.createdAt)); }

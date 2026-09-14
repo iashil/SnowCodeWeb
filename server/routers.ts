@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { createContact, createProject, createTeamMember, deleteProject, deleteTeamMember, getDashboardStats, getSiteSettings, listAllProjects, listAllTeam, listContacts, listPublishedProjects, listVisibleTeam, recordPageView, saveSiteSettings, updateContactStatus, updateProject, updateTeamMember } from "./db";
+import { createContact, createProject, createTeamMember, deleteContact, deleteProject, deleteTeamMember, getDashboardStats, getSiteSettings, listAllProjects, listAllTeam, listContacts, listPublishedProjects, listVisibleTeam, recordPageView, saveSiteSettings, updateContactStatus, updateProject, updateTeamMember } from "./db";
 import { authenticateLocalAdmin, changeLocalAdminPassword, createLocalAdminSession, LOCAL_ADMIN_COOKIE } from "./localAuth";
 import { storagePut } from "./storage";
 import type { InsertProject, InsertTeamMember } from "../drizzle/schema";
@@ -41,7 +41,7 @@ export const appRouter = router({
     remove: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteProject(input.id)),
     uploadImage: adminProcedure.input(z.object({ filename: z.string().min(1).max(180), contentType: z.string().regex(/^image\//), data: z.string().max(12_000_000) })).mutation(async ({ input }) => { const rawData = input.data.includes(",") ? input.data.slice(input.data.indexOf(",") + 1) : input.data; const safeFilename = input.filename.replace(/[^a-zA-Z0-9._-]/g, "-"); return storagePut(`projects/${Date.now()}-${safeFilename}`, Buffer.from(rawData, "base64"), input.contentType); }),
   }),
-  contacts: router({ create: publicProcedure.input(z.object({ name: z.string().min(2).max(180), email: z.string().email().max(320), message: z.string().min(10).max(5000) })).mutation(({ input }) => createContact(input)), list: adminProcedure.query(listContacts), setStatus: adminProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["new", "read", "archived"]) })).mutation(({ input }) => updateContactStatus(input.id, input.status)) }),
+  contacts: router({ create: publicProcedure.input(z.object({ name: z.string().min(2).max(180), email: z.string().email().max(320), message: z.string().min(10).max(5000) })).mutation(({ input }) => createContact(input)), list: adminProcedure.query(listContacts), setStatus: adminProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["new", "read", "archived"]) })).mutation(({ input }) => updateContactStatus(input.id, input.status)), remove: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteContact(input.id)) }),
   team: router({
     adminList: adminProcedure.query(async () => (await listAllTeam()).map(publicTeam)),
     create: adminProcedure.input(teamInput).mutation(({ input }) => createTeamMember(toTeamRow(input))),

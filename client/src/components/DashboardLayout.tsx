@@ -21,13 +21,14 @@ import {
 } from "@/components/ui/sidebar";
 import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Moon, PanelLeft, Sun, Users } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Content desk", path: "/admin" },
@@ -117,6 +118,7 @@ function DashboardLayoutContent({
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
   const { isArabic, toggleLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const localizedLabel = (item: typeof menuItems[number]) => isArabic
     ? (item.path === "/admin" ? "لوحة المحتوى" : "الموقع العام")
     : item.label;
@@ -209,6 +211,10 @@ function DashboardLayoutContent({
 
           <SidebarFooter className="p-3">
             <button className="admin-sidebar-language" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}><span>{isArabic ? "EN" : "عربي"}</span><small>{isArabic ? "English interface" : "الواجهة العربية"}</small></button>
+            <div className="admin-sidebar-tools">
+              <button className="admin-sidebar-tool" onClick={toggleSidebar} aria-label={isCollapsed ? (isArabic ? "إظهار القائمة" : "Show menu") : (isArabic ? "إخفاء القائمة" : "Hide menu")}><PanelLeft size={15} /><span>{isCollapsed ? (isArabic ? "إظهار القائمة" : "Show menu") : (isArabic ? "إخفاء القائمة" : "Hide menu")}</span></button>
+              <button className="admin-sidebar-tool" onClick={toggleTheme} aria-label={theme === "dark" ? (isArabic ? "تفعيل الوضع الفاتح" : "Use light theme") : (isArabic ? "تفعيل الوضع الداكن" : "Use dark theme")}><span className="theme-tool-icon">{theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}</span><span>{theme === "dark" ? (isArabic ? "الوضع الفاتح" : "Light theme") : (isArabic ? "الوضع الداكن" : "Dark theme")}</span></button>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
