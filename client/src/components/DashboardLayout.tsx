@@ -214,7 +214,7 @@ function DashboardLayoutContent({
           </SidebarContent>
 
           <SidebarFooter className="p-3">
-            <button className="admin-sidebar-language" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}><span>{isArabic ? "EN" : "عربي"}</span><small>{isArabic ? "English interface" : "الواجهة العربية"}</small></button>
+            <button className="admin-sidebar-language" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}><span>{isArabic ? "EN" : "ع"}</span><small>{isArabic ? "English interface" : "الواجهة العربية"}</small></button>
             <div className="admin-sidebar-tools">
               <button className="admin-sidebar-tool" onClick={toggleSidebar} aria-label={isCollapsed ? (isArabic ? "إظهار القائمة" : "Show menu") : (isArabic ? "إخفاء القائمة" : "Hide menu")}><PanelLeft size={15} /><span>{isCollapsed ? (isArabic ? "إظهار القائمة" : "Show menu") : (isArabic ? "إخفاء القائمة" : "Hide menu")}</span></button>
               <button className="admin-sidebar-tool" onClick={toggleTheme} aria-label={theme === "dark" ? (isArabic ? "تفعيل الوضع الفاتح" : "Use light theme") : (isArabic ? "تفعيل الوضع الداكن" : "Use dark theme")}><span className="theme-tool-icon">{theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}</span><span>{theme === "dark" ? (isArabic ? "الوضع الفاتح" : "Light theme") : (isArabic ? "الوضع الداكن" : "Dark theme")}</span></button>
@@ -269,14 +269,14 @@ function DashboardLayoutContent({
                   <span className="tracking-tight text-foreground">
                     {activeMenuItem ? localizedLabel(activeMenuItem) : (isArabic ? "القائمة" : "Menu")}
                   </span>
-                  <button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button>
+                  <button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "ع"}</button>
                 </div>
               </div>
             </div>
           </div>
         )}
         <main className="flex-1 p-4">
-          <div className="admin-desktop-language"><button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button></div>
+          <div className="admin-desktop-language"><button className="admin-language-button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "ع"}</button></div>
           {children}
         </main>
       </SidebarInset>

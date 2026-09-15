@@ -284,7 +284,7 @@ export default function Home() {
           <span className="team-social-nav" aria-label="Snow Code Team social links"><a href={teamLinks.github} target="_blank" rel="noreferrer" aria-label="Snow Code Team GitHub"><Github size={14} /></a><a href={teamLinks.facebook} target="_blank" rel="noreferrer" aria-label="Snow Code Team Facebook"><Facebook size={14} /></a><a href={teamLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="Snow Code Team WhatsApp"><MessageCircle size={14} /></a><a href={teamLinks.instagram} target="_blank" rel="noreferrer" aria-label="Snow Code Team Instagram"><Instagram size={14} /></a><a href={teamLinks.emailOne} aria-label="Email asyl68372@gmail.com" title="asyl68372@gmail.com"><Mail size={14} /></a><a href={teamLinks.emailTwo} aria-label="Email ferasmhyop2003@gmail.com" title="ferasmhyop2003@gmail.com"><Mail size={14} /></a></span>
           <a className="nav-admin-link" href="/admin" onClick={() => setMenuOpen(false)}>{isArabic ? "الإدارة" : "Admin"}</a>
           <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>{theme === "dark" ? "☼" : "◐"}</button>
-          <button className="language-toggle" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "عربي"}</button>
+          <button className="language-toggle" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>{isArabic ? "EN" : "ع"}</button>
           <button className="nav-availability" onClick={() => scrollTo("contact")}>
             <span className="status-dot" /> {isArabic ? "متاحون لمشاريع مختارة" : "available for select projects"}
           </button>

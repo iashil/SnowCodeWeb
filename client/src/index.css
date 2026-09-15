@@ -495,3 +495,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .dark .nav-links a:hover, .dark .nav-links button:hover, .dark .site-nav .social-link:hover { color: #70c9ff; }
 .dark .site-nav .admin-link, .dark .language-toggle, .dark .theme-toggle { background: rgba(56,189,248,.1); border-color: rgba(56,189,248,.3); color: #b8ddf4; }
 @media (max-width: 640px) { .message-toolbar > * { flex: 1 1 100%; } .message-toolbar .bulk-delete-button { flex-basis: 100%; } }
+
+.group[data-collapsible="icon"] .admin-sidebar-language { justify-content: center; min-height: 34px; padding: 7px; }
+.group[data-collapsible="icon"] .admin-sidebar-language small, .group[data-collapsible="icon"] .admin-sidebar-tool span:last-child { display: none; }
+.group[data-collapsible="icon"] .admin-sidebar-tools { align-items: center; }
+.group[data-collapsible="icon"] .admin-sidebar-tool { justify-content: center; min-height: 34px; padding: 7px; }
+.group[data-collapsible="icon"] .admin-sidebar-tool svg { flex: 0 0 auto; }
+.group[data-collapsible="icon"] [data-sidebar="menu-button"] > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-sidebar-language span, .admin-language-button, .language-toggle { white-space: nowrap; }
