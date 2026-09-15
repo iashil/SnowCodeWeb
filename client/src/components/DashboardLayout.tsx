@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, Moon, PanelLeft, Sun, Users } from "lucide-react";
+import { Inbox, LayoutDashboard, LogOut, Moon, PanelLeft, Sun, Users } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -32,6 +32,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Content desk", path: "/admin" },
+  { icon: Inbox, label: "Messages", path: "/admin#messages" },
   { icon: Users, label: "Public site", path: "/" },
 ];
 
@@ -115,12 +116,14 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const activeMenuItem = menuItems.find(item => item.path === location);
+  const activeMenuItem = menuItems.find(item => item.path === location || (item.path === "/admin#messages" && location === "/admin"));
   const isMobile = useIsMobile();
   const { isArabic, toggleLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const unreadQuery = trpc.contacts.list.useQuery(undefined, { enabled: user?.role === "admin", refetchInterval: 30_000 });
+  const unreadCount = unreadQuery.data?.filter((item) => item.status === "new").length ?? 0;
   const localizedLabel = (item: typeof menuItems[number]) => isArabic
-    ? (item.path === "/admin" ? "لوحة المحتوى" : "الموقع العام")
+    ? (item.path === "/admin" ? "لوحة المحتوى" : item.path === "/admin#messages" ? "الرسائل" : "الموقع العام")
     : item.label;
 
   useEffect(() => {
@@ -163,6 +166,7 @@ function DashboardLayoutContent({
     <>
       <div className="relative" ref={sidebarRef}>
         <Sidebar
+          side={isArabic ? "right" : "left"}
           collapsible="icon"
           className="border-r-0"
           disableTransition={isResizing}
@@ -201,7 +205,7 @@ function DashboardLayoutContent({
                       <item.icon
                         className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
                       />
-                      <span>{localizedLabel(item)}</span>
+                      <span>{localizedLabel(item)}{item.path === "/admin#messages" && unreadCount > 0 && <b className="admin-unread-badge">{unreadCount > 99 ? "99+" : unreadCount}</b>}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
