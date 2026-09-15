@@ -34,32 +34,42 @@ const translations: Record<string, string> = {
   "Page Not Found": "الصفحة غير موجودة", "Sorry, the page you are looking for doesn't exist.": "عذرًا، الصفحة التي تبحث عنها غير موجودة.", "It may have been moved or deleted.": "ربما تم نقلها أو حذفها.", "Go Home": "العودة للرئيسية"
 };
 
-const originalText = new WeakMap<Text, string>();
-const originalAttributes = new WeakMap<Element, Map<string, string>>();
+const translationPairs = Object.entries(translations);
+
+function translateValue(value: string, language: Language) {
+  const pairs = translationPairs
+    .map(([english, arabic]) => language === "ar" ? [english, arabic] as const : [arabic, english] as const)
+    .sort(([left], [right]) => right.length - left.length);
+  const tokens: string[] = [];
+  let next = value;
+  pairs.forEach(([source, target], index) => {
+    const token = `__SNOWCODE_TRANSLATION_${index}__`;
+    if (next.includes(source)) {
+      next = next.split(source).join(token);
+      tokens[index] = target;
+    }
+  });
+  tokens.forEach((target, index) => {
+    if (target) next = next.split(`__SNOWCODE_TRANSLATION_${index}__`).join(target);
+  });
+  return next;
+}
 
 function syncTranslation(language: Language) {
   const root = document.body;
   const applyText = (node: Text) => {
-    const source = originalText.get(node) ?? node.nodeValue ?? "";
-    if (!originalText.has(node)) originalText.set(node, source);
-    let next = source;
-    if (language === "ar") {
-      for (const [english, arabic] of Object.entries(translations)) next = next.split(english).join(arabic);
-    }
+    const source = node.nodeValue ?? "";
+    const next = translateValue(source, language);
     if (node.nodeValue !== next) node.nodeValue = next;
   };
   const applyElement = (element: Element) => {
     const attrs = ["placeholder", "title", "aria-label"];
-    const saved = originalAttributes.get(element) ?? new Map<string, string>();
     for (const attr of attrs) {
       const value = element.getAttribute(attr);
       if (value === null) continue;
-      if (!saved.has(attr)) saved.set(attr, value);
-      let next = saved.get(attr) ?? value;
-      if (language === "ar") for (const [english, arabic] of Object.entries(translations)) next = next.split(english).join(arabic);
+      const next = translateValue(value, language);
       if (value !== next) element.setAttribute(attr, next);
     }
-    originalAttributes.set(element, saved);
   };
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node: Node | null;
